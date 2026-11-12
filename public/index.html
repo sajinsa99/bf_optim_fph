@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Optimiseur de ponts — jours fériés France</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Optimiseur de ponts 🇫🇷</h1>
+    <p class="sous-titre">
+      Comment poser ses congés en <strong id="annee">…</strong> pour maximiser les ponts
+      autour des jours fériés et des week-ends.
+    </p>
+  </header>
+
+  <main>
+    <section id="section-resume" class="carte">
+      <h2>Recommandation</h2>
+      <div id="resume"></div>
+      <ol id="liste-ponts"></ol>
+    </section>
+
+    <section id="section-feries" class="carte">
+      <h2>Jours fériés <span class="annee-inline"></span></h2>
+      <table id="table-feries">
+        <thead>
+          <tr><th>Date</th><th>Jour</th><th>Fête</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="section-calendrier" class="carte">
+      <h2>Calendrier de l'année</h2>
+      <div class="legende">
+        <span class="pastille ferie"></span> Jour férié
+        <span class="pastille conge"></span> Congé à poser
+        <span class="pastille weekend"></span> Week-end
+        <span class="pastille travaille"></span> Jour travaillé
+      </div>
+      <div id="calendrier"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Jours fériés : calendrier officiel DINUM (Métropole). Année en cours uniquement.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

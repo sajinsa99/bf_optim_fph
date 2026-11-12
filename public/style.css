@@ -1,0 +1,172 @@
+:root {
+  --ferie: #35a853;        /* vert franc : jour férié */
+  --ferie-bord: #2b8a44;
+  --conge: #c9efd3;        /* vert pâle : congé à poser */
+  --conge-bord: #8fd6a6;
+  --weekend: #e4e6e9;      /* gris clair : week-end */
+  --travaille: #ffffff;    /* blanc : jour travaillé */
+  --bord: #d7dbe0;
+  --texte: #1f2328;
+  --muted: #5c6670;
+  --fond: #f4f6f8;
+  --accent: #2b6cb0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--texte);
+  background: var(--fond);
+  line-height: 1.5;
+}
+
+header {
+  padding: 1.5rem 1rem 1rem;
+  text-align: center;
+}
+header h1 { margin: 0 0 .25rem; font-size: 1.6rem; }
+.sous-titre { margin: 0 auto; max-width: 42rem; color: var(--muted); }
+
+main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 0 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.carte {
+  background: #fff;
+  border: 1px solid var(--bord);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+.carte h2 { margin: 0 0 .75rem; font-size: 1.15rem; }
+
+/* ── Résumé / ponts ── */
+.chiffres { font-size: 1.05rem; margin: 0 0 .5rem; }
+.note { margin: 0; color: var(--muted); font-size: .92rem; }
+
+#liste-ponts {
+  list-style: none;
+  margin: .75rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+.pont {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .25rem 1rem;
+  padding: .5rem .75rem;
+  border: 1px solid var(--conge-bord);
+  background: var(--conge);
+  border-radius: 8px;
+}
+.pont.gratuit {
+  border-color: var(--ferie-bord);
+  background: #eafaef;
+}
+.pont-action { font-weight: 600; }
+.pont-gain { color: var(--muted); }
+
+/* ── Tableau des jours fériés ── */
+#table-feries {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .95rem;
+}
+#table-feries th, #table-feries td {
+  text-align: left;
+  padding: .4rem .6rem;
+  border-bottom: 1px solid var(--bord);
+}
+#table-feries th { color: var(--muted); font-weight: 600; }
+.ferie-weekend { color: var(--muted); }
+.tag {
+  font-size: .72rem;
+  background: var(--weekend);
+  color: var(--muted);
+  padding: .05rem .4rem;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+/* ── Légende ── */
+.legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1.1rem;
+  align-items: center;
+  margin-bottom: .9rem;
+  color: var(--muted);
+  font-size: .9rem;
+}
+.pastille {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 4px;
+  vertical-align: -3px;
+  margin-right: .25rem;
+  border: 1px solid var(--bord);
+}
+.pastille.ferie { background: var(--ferie); border-color: var(--ferie-bord); }
+.pastille.conge { background: var(--conge); border-color: var(--conge-bord); }
+.pastille.weekend { background: var(--weekend); }
+.pastille.travaille { background: var(--travaille); }
+
+/* ── Calendrier ── */
+#calendrier {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  overflow-x: auto;
+}
+.mois-ligne {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.mois-label {
+  width: 3rem;
+  flex: 0 0 3rem;
+  text-align: right;
+  color: var(--muted);
+  font-size: .82rem;
+  text-transform: capitalize;
+}
+.mois-cases {
+  display: flex;
+  gap: 2px;
+}
+.case {
+  width: 1.45rem;
+  height: 1.45rem;
+  flex: 0 0 1.45rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .68rem;
+  border-radius: 3px;
+  border: 1px solid var(--bord);
+  cursor: default;
+  user-select: none;
+}
+.case.ferie { background: var(--ferie); border-color: var(--ferie-bord); color: #fff; font-weight: 700; }
+.case.conge { background: var(--conge); border-color: var(--conge-bord); font-weight: 600; }
+.case.weekend { background: var(--weekend); color: var(--muted); }
+.case.travaille { background: var(--travaille); }
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: .82rem;
+  padding: 0 1rem 2rem;
+}
