@@ -22,7 +22,7 @@ moins 2 jours de repos par jour posé (week-ends et fériés inclus).
 - Un **calendrier** de l'année (une ligne par mois, une case par jour) :
 
 | Couleur | Signification |
-|---|---|
+| --- | --- |
 | 🟩 Vert | Jour férié |
 | 🟢 Vert pâle | Congé à poser (le pont recommandé) |
 | ⬜ Gris clair | Week-end |

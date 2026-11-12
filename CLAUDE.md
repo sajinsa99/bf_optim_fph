@@ -26,9 +26,11 @@ npm start                 # node server.js, écoute sur PORT (défaut 3000) → 
 Il n'y a **pas** de suite de tests.
 
 ### Linting / checks
+
 ```bash
 bash checks.sh            # lance tous les linters/scanners dans l'image Docker xmk_linters → checks-report.md
 ```
+
 `checks.sh` nécessite Docker (image SAP interne **`xmk_linters:2.0.2`**) et lance shellcheck,
 jsonlint, markdownlint, eslint, semgrep, trivy, gitleaks. shellcheck est aussi disponible
 localement pour un contrôle rapide hors Docker (`shellcheck install.sh update_deps.sh`).
@@ -36,6 +38,7 @@ localement pour un contrôle rapide hors Docker (`shellcheck install.sh update_d
 ## Architecture
 
 ### Source des jours fériés
+
 - `public/public_holidays.ics` — calendrier officiel DINUM (Métropole), format iCal,
   couvre 2021–2031 (11 jours fériés/an). **Copie** du même fichier dans `bf_planning` ;
   dupliqué volontairement pour garder `bf_optim_fph` autonome.
@@ -44,6 +47,7 @@ localement pour un contrôle rapide hors Docker (`shellcheck install.sh update_d
   (`new Date().getFullYear()`). Même logique que `bf_planning/public/app.js`.
 
 ### Logique d'optimisation (`public/app.js`, client-side)
+
 - `construireAnnee` : un objet par jour du 1/1 au 31/12 ; chaque jour est `weekend`, `ferie`,
   ou travaillé. `libre = weekend || ferie`.
 - `marquerConges` : repère les suites de jours **travaillés** encadrées par des jours libres.
@@ -59,10 +63,12 @@ localement pour un contrôle rapide hors Docker (`shellcheck install.sh update_d
   calendrier (12 lignes = mois, une case par jour).
 
 ### Code couleur des cases (voir `public/style.css`, variables `:root`)
+
 - vert franc `.ferie` = jour férié · vert pâle `.conge` = congé à poser ·
   gris clair `.weekend` = week-end · blanc `.travaille` = jour travaillé.
 
 ### Déploiement
+
 `install.sh` (lancé en **root** sur Ubuntu) déploie dans `/opt/bf_optim_fph`, installe le
 service systemd `deploy/bf_optim_fph.service` (tourne en `www-data`, `PORT=3001` pour ne pas
 entrer en conflit avec `bf_planning` sur 3000), et injecte le snippet
@@ -71,6 +77,7 @@ entrer en conflit avec `bf_planning` sur 3000), et injecte le snippet
 Pas de `.env`, pas de mot de passe, pas de dossier `data/` : le service démarre immédiatement.
 
 ## Conventions
+
 - Node épinglé à 20.20.2 / npm 10.8.2 (voir `engines` dans `package.json` et `.nvmrc`).
 - Dépendance unique : `express` — garder l'empreinte minimale.
 - Gitignored : `node_modules/`, `tmp/`, `.vscode/`, `checks-report.md`.
