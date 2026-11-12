@@ -47,4 +47,4 @@ bash checks.sh            # shellcheck, eslint, semgrep, trivy, gitleaks… via 
 
 `install.sh` (lancé en **root** sur Ubuntu) déploie dans `/opt/bf_optim_fph`, installe le
 service systemd `deploy/bf_optim_fph.service` (port 3001, utilisateur `www-data`) et injecte le
-snippet `deploy/nginx-bf_optim_fph.conf` sous `/optim/` dans le vhost nginx existant.
+snippet `deploy/nginx-bf_optim_fph.conf` sous `/fph_optim/` dans le vhost nginx existant.

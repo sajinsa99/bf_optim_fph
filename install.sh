@@ -62,4 +62,4 @@ nginx -t
 systemctl reload nginx
 
 echo ""
-echo "Done. Optimiseur disponible sous https://bfablet92.hd.free.fr/optim/"
+echo "Done. Optimiseur disponible sous https://bfablet92.hd.free.fr/fph_optim/"

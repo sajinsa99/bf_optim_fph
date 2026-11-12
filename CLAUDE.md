@@ -72,7 +72,7 @@ localement pour un contrôle rapide hors Docker (`shellcheck install.sh update_d
 `install.sh` (lancé en **root** sur Ubuntu) déploie dans `/opt/bf_optim_fph`, installe le
 service systemd `deploy/bf_optim_fph.service` (tourne en `www-data`, `PORT=3001` pour ne pas
 entrer en conflit avec `bf_planning` sur 3000), et injecte le snippet
-`deploy/nginx-bf_optim_fph.conf` sous `/optim/` dans le vhost nginx `bruno` via le glob include
+`deploy/nginx-bf_optim_fph.conf` sous `/fph_optim/` dans le vhost nginx `bruno` via le glob include
 `/etc/nginx/snippets/*_location.conf` (mécanisme partagé avec `bf_planning`, idempotent).
 Pas de `.env`, pas de mot de passe, pas de dossier `data/` : le service démarre immédiatement.
 
