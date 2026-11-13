@@ -43,8 +43,9 @@ localement pour un contrôle rapide hors Docker (`shellcheck install.sh update_d
   couvre 2021–2031 (11 jours fériés/an). **Copie** du même fichier dans `bf_planning` ;
   dupliqué volontairement pour garder `bf_optim_fph` autonome.
 - Parsing (`public/app.js`, `chargerFeries`) : split sur `BEGIN:VEVENT`, regex
-  `DTSTART;VALUE=DATE:(\d{8})` + `SUMMARY:(.+)`, filtré sur l'année en cours
-  (`new Date().getFullYear()`). Même logique que `bf_planning/public/app.js`.
+  `DTSTART;VALUE=DATE:(\d{8})` + `SUMMARY:(.+)`. On parse **toutes** les années du fichier ;
+  le filtrage par année affichée se fait au rendu (`feriesDeAnnee`). L'appli couvre **l'année
+  en cours (Y) et l'année suivante (Y+1)**, navigables via les flèches de l'en-tête.
 
 ### Logique d'optimisation (`public/app.js`, client-side)
 
@@ -81,6 +82,7 @@ Pas de `.env`, pas de mot de passe, pas de dossier `data/` : le service démarre
 - Node épinglé à 20.20.2 / npm 10.8.2 (voir `engines` dans `package.json` et `.nvmrc`).
 - Dépendance unique : `express` — garder l'empreinte minimale.
 - Gitignored : `node_modules/`, `tmp/`, `.vscode/`, `checks-report.md`.
-- Projet **année en cours uniquement** : pas de navigation entre années.
+- Projet **année en cours (Y) et année suivante (Y+1)** : navigation via les flèches de
+  l'en-tête, bornée à ces deux années (`ANNEE_MIN`/`ANNEE_MAX` dans `app.js`).
 - `update_deps.sh` : vérifie les mises à jour npm en respectant le pin Node (copie générique
   de `bf_planning/update_deps.sh`).

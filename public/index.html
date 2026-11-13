@@ -13,6 +13,11 @@
       Comment poser ses congés en <strong id="annee">…</strong> pour maximiser les ponts
       autour des jours fériés et des week-ends.
     </p>
+    <nav class="annee-nav" aria-label="Navigation entre années">
+      <button id="annee-prec" class="nav-fleche" type="button" aria-label="Année précédente">◀</button>
+      <span id="annee-courante" class="annee-courante" aria-live="polite">…</span>
+      <button id="annee-suiv" class="nav-fleche" type="button" aria-label="Année suivante">▶</button>
+    </nav>
   </header>
 
   <main>
@@ -33,7 +38,7 @@
     </section>
 
     <section id="section-calendrier" class="carte">
-      <h2>Calendrier de l'année</h2>
+      <h2>Calendrier de l'année <span class="annee-inline"></span></h2>
       <div class="legende">
         <span class="pastille ferie"></span> Jour férié
         <span class="pastille conge"></span> Congé à poser
@@ -45,7 +50,7 @@
   </main>
 
   <footer>
-    <p>Jours fériés : calendrier officiel DINUM (Métropole). Année en cours uniquement.</p>
+    <p>Jours fériés : calendrier officiel DINUM (Métropole). Année en cours et année suivante.</p>
   </footer>
 
   <script src="app.js"></script>

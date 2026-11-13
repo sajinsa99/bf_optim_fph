@@ -14,10 +14,15 @@ const JOURS_COURT = ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'];
 const GAP_MAX = 2;        // au plus 2 jours de congé posés pour combler un trou
 const RATIO_MIN = 2;      // au moins 2 jours de repos par jour de congé posé
 
-const ANNEE = new Date().getFullYear();
+// Deux années couvertes : l'année en cours (Y) et la suivante (Y+1).
+const ANNEE_COURANTE = new Date().getFullYear();
+const ANNEE_MIN = ANNEE_COURANTE;
+const ANNEE_MAX = ANNEE_COURANTE + 1;
+let anneeAffichee = ANNEE_COURANTE; // année actuellement affichée (navigable)
 
 // ── Chargement des jours fériés (calendrier officiel DINUM, format iCal) ────────
-// Même approche que bf_planning : on parse le .ics et on ne garde que l'année en cours.
+// Même approche que bf_planning : on parse le .ics. On garde toutes les années
+// disponibles (le filtrage par année se fait au rendu, cf. feriesDeAnnee).
 async function chargerFeries() {
   const feries = new Map(); // clé "YYYYMMDD" → nom
   try {
@@ -26,7 +31,7 @@ async function chargerFeries() {
     for (const ev of texte.split('BEGIN:VEVENT').slice(1)) {
       const dm = ev.match(/DTSTART;VALUE=DATE:(\d{8})/);
       const sm = ev.match(/SUMMARY:(.+)/);
-      if (dm && sm && dm[1].startsWith(String(ANNEE))) {
+      if (dm && sm) {
         feries.set(dm[1], sm[1].trim());
       }
     }
@@ -36,18 +41,28 @@ async function chargerFeries() {
   return feries;
 }
 
+// Sous-ensemble des fériés d'une année donnée.
+function feriesDeAnnee(feries, annee) {
+  const prefixe = String(annee);
+  const sous = new Map();
+  for (const [k, nom] of feries) {
+    if (k.startsWith(prefixe)) sous.set(k, nom);
+  }
+  return sous;
+}
+
 // ── Construction de l'année ─────────────────────────────────────────────────────
 function cle(y, m, d) {
   return `${y}${String(m + 1).padStart(2, '0')}${String(d).padStart(2, '0')}`;
 }
 
 // Tableau d'un objet par jour de l'année, index 0 = 1er janvier.
-function construireAnnee(feries) {
+function construireAnnee(feries, annee) {
   const jours = [];
-  const fin = new Date(ANNEE, 11, 31);
-  for (let d = new Date(ANNEE, 0, 1); d <= fin; d.setDate(d.getDate() + 1)) {
+  const fin = new Date(annee, 11, 31);
+  for (let d = new Date(annee, 0, 1); d <= fin; d.setDate(d.getDate() + 1)) {
     const dow = d.getDay();
-    const k = cle(ANNEE, d.getMonth(), d.getDate());
+    const k = cle(annee, d.getMonth(), d.getDate());
     const nomFerie = feries.get(k) || null;
     const weekend = dow === 0 || dow === 6;
     jours.push({
@@ -233,15 +248,44 @@ function rendreCalendrier(jours) {
 
 // ── Démarrage ────────────────────────────────────────────────────────────────────
 (async function main() {
-  document.getElementById('annee').textContent = ANNEE;
-  for (const el of document.querySelectorAll('.annee-inline')) el.textContent = ANNEE;
+  const feriesTous = await chargerFeries();
 
-  const feries = await chargerFeries();
-  const jours = construireAnnee(feries);
-  marquerConges(jours);
-  const periodes = calculerPeriodes(jours);
+  // (Re)construit tout l'affichage pour l'année demandée.
+  function rendre(annee) {
+    anneeAffichee = annee;
 
-  rendreFeries(feries);
-  rendreResume(periodes);
-  rendreCalendrier(jours);
+    // Libellés d'année.
+    document.getElementById('annee').textContent = annee;
+    document.getElementById('annee-courante').textContent = annee;
+    for (const el of document.querySelectorAll('.annee-inline')) el.textContent = annee;
+
+    // État des flèches de navigation (bornées à [Y, Y+1]).
+    document.getElementById('annee-prec').disabled = annee <= ANNEE_MIN;
+    document.getElementById('annee-suiv').disabled = annee >= ANNEE_MAX;
+
+    // On vide les zones avant de les reremplir.
+    document.querySelector('#table-feries tbody').innerHTML = '';
+    document.getElementById('resume').innerHTML = '';
+    document.getElementById('liste-ponts').innerHTML = '';
+    document.getElementById('calendrier').innerHTML = '';
+
+    const feries = feriesDeAnnee(feriesTous, annee);
+    const jours = construireAnnee(feries, annee);
+    marquerConges(jours);
+    const periodes = calculerPeriodes(jours);
+
+    rendreFeries(feries);
+    rendreResume(periodes);
+    rendreCalendrier(jours);
+  }
+
+  // Navigation : une année en arrière / en avant, dans les bornes.
+  document.getElementById('annee-prec').addEventListener('click', () => {
+    if (anneeAffichee > ANNEE_MIN) rendre(anneeAffichee - 1);
+  });
+  document.getElementById('annee-suiv').addEventListener('click', () => {
+    if (anneeAffichee < ANNEE_MAX) rendre(anneeAffichee + 1);
+  });
+
+  rendre(ANNEE_COURANTE);
 })();
